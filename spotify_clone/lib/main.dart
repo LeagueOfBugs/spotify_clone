@@ -1,20 +1,38 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:spotify_clone/core/configs/theme/app_theme.dart';
+import 'package:spotify_clone/presentation/choose_mode/bloc/theme_cubit.dart';
+import 'package:spotify_clone/presentation/pages/splash/splash.dart';
 
-import 'src/app.dart';
-import 'src/settings/settings_controller.dart';
-import 'src/settings/settings_service.dart';
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  HydratedBloc.storage = await HydratedStorage.build(
+      storageDirectory: kIsWeb
+          ? HydratedStorage.webStorageDirectory
+          : await getApplicationDocumentsDirectory());
 
-void main() async {
-  // Set up the SettingsController, which will glue user settings to multiple
-  // Flutter Widgets.
-  final settingsController = SettingsController(SettingsService());
+  runApp(const MyApp());
+}
 
-  // Load the user's preferred theme while the splash screen is displayed.
-  // This prevents a sudden theme change when the app is first displayed.
-  await settingsController.loadSettings();
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
 
-  // Run the app and pass in the SettingsController. The app listens to the
-  // SettingsController for changes, then passes it further down to the
-  // SettingsView.
-  runApp(MyApp(settingsController: settingsController));
+  @override
+  Widget build(BuildContext context) {
+    return MultiBlocProvider(
+      providers: [BlocProvider(create: (_) => ThemeCubit())],
+      child: BlocBuilder<ThemeCubit, ThemeMode>(
+        builder: (context, mode) => MaterialApp(
+          theme: AppTheme.lightTheme,
+          darkTheme: AppTheme.darkTheme,
+          themeMode: mode,
+          debugShowCheckedModeBanner: false,
+          home: const SplashPage(),
+        ),
+      ),
+    );
+  }
 }

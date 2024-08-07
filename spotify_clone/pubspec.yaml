@@ -14,6 +14,10 @@ dependencies:
     sdk: flutter
   flutter_localizations:
     sdk: flutter
+  flutter_svg: ^2.0.10+1 
+  flutter_bloc: 
+  hydrated_bloc:
+  path_provider: 
 
 dev_dependencies:
   flutter_test:
@@ -29,4 +33,22 @@ flutter:
 
   assets:
     # Add assets from the images directory to the application.
+    - assets/fonts/
     - assets/images/
+    - assets/vectors/
+
+  fonts:
+    - family: RobotoSlab
+      fonts:
+        - asset: assets/fonts/RobotoSlab-black.ttf
+          weight: 900
+        - asset: assets/fonts/RobotoSlab-Bold.ttf
+          weight: 600
+        - asset: assets/fonts/RobotoSlab-Light.ttf
+          weight: 300
+        - asset: assets/fonts/RobotoSlab-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/RobotoSlab-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/RobotoSlab-Thin.ttf
+          weight: 200
